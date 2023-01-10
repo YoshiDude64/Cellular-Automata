@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+  <head>
+    <title>Langton's Ant</title>
+    <style>
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      canvas {
+        background-color: white;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body onload="LangtonLoop()">
+    <canvas id="Antvas"></canvas>
+    <script>
+      const scale = 10;
+      var canvasA = document.getElementById("Antvas");
+      var pen = canvasA.getContext("2d");
+      pen.canvas.height = scale*200;
+      pen.canvas.width = scale*400;
+      var antx = scale*20;
+      var anty = scale*10;
+      var facing = 0;
+      var antgrid = new Array(1000);
+      for (var i = 0;i<antgrid.length;i++)
+      {
+        antgrid[i] = new Array(1000);
+      }
+      for (var i=0;i<1000;i++)
+      {
+        for (var j=0;j<1000;j++)
+        {
+          antgrid[i][j] = 0;
+        }
+      }
+      function LangtonLoop()
+      {
+        setInterval(Langton, 1);
+      }
+      function Langton()
+      {
+        if(antx>1000||anty>1000||antx<0||anty<0)
+          return;
+        if(antgrid[antx][anty]==1)
+        {
+          pen.fillStyle = "white";
+          pen.fillRect(antx*scale, anty*scale, scale, scale);
+          facing--;
+          antgrid[antx][anty]=0;
+        }
+        else
+        {
+          pen.fillStyle = "black";
+          pen.fillRect(antx*scale, anty*scale, scale, scale);
+          facing++;
+          antgrid[antx][anty]=1;
+        }
+        if (facing == 4)
+          facing = 0;
+        if (facing == -1)
+          facing = 3;
+        switch (facing)
+        {
+          case 0:
+            anty+=1;
+            break;
+          case 1:
+            antx+=1;
+            break;
+          case 2:
+            anty-=1;
+            break;
+          case 3:
+            antx-=1;
+            break;
+        }
+        pen.fillStyle = "red";
+        pen.fillRect(antx*scale, anty*scale, scale, scale);
+      }
+    </script>
+  </body>
+</html>
